@@ -5,8 +5,26 @@ from project.azquery import user_exists
 from .models import User
 from . import db
 
+import sys
+import os
+sys.path.insert(0, os.getcwd()+"/project")
+import azquery
+
+
+
+
+
+
+
 
 auth = Blueprint('auth', __name__)
+
+
+
+
+
+
+####################LOGIN MODULE###################
 
 @auth.route('/login')
 def login():
@@ -18,7 +36,7 @@ def login_post():
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
     print("a")
-    if user_exists(email,password)==0:
+    if azquery.user_exists(email,password)==0:
         flash('Please check your login details and try again.')
         return redirect(url_for('auth.login')) # if the user doesn't exist or password is wrong, reload the page
 
@@ -26,6 +44,9 @@ def login_post():
     else:
         return redirect(url_for('main.profile'))
 
+
+
+####################SIGNUP MODULE###################
 @auth.route('/signup')
 def signup():
     return render_template('signup.html')
@@ -73,6 +94,18 @@ def user_exists(a,b):
     if row:
         x=1
     return x
+     
+def user_create(a,b,c,d):
+    x=0
+    with cnxn.cursor() as cursor:
+        cursor.execute("INSERT INTO dbo.users([id], [email], [password], [name]) VALUES(?,?,?,?)",[a,b,c,d])
+        x=1
+    return x
+
+
+
+
         
 
-user_exists("a","a")
+
+
