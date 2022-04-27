@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from project.azquery import user_exists
 from .models import User
 from . import db
-
+import socket
 import sys
 import os
 sys.path.insert(0, os.getcwd()+"/project")
@@ -12,7 +12,7 @@ import azquery
 
 
 
-
+osname="Your current serving machine is "+socket.gethostname()
 
 
 
@@ -28,7 +28,7 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login')
 def login():
-    return render_template('login.html')
+    return render_template('login.html',osname=osname)
 @auth.route('/login', methods=['POST'])
 def login_post():
     # login code goes here
@@ -49,7 +49,7 @@ def login_post():
 ####################SIGNUP MODULE###################
 @auth.route('/signup')
 def signup():
-    return render_template('signup.html')
+    return render_template('signup.html',osname=osname)
 
 @auth.route('/signup', methods=['POST'])
 def signup_post():
@@ -58,25 +58,21 @@ def signup_post():
     name = request.form.get('name')
     password = request.form.get('password')
 
-    user = User.query.filter_by(email=email).first() # if this returns a user, then the email already exists in database
+    
 
-    if user: # if a user is found, we want to redirect back to signup page so user can try again
+    if azquery.user_exists(email,password)==1:
         flash('Email address already exists')
         return redirect(url_for('auth.signup'))
 
     # create a new user with the form data. Hash the password so the plaintext version isn't saved.
-    new_user = User(email=email, name=name, password="generate_password_hash(password, method='sha256')")
+    azquery.user_create(email,password,name)
 
-    # add the new user to the database
-    db.session.add(new_user)
-    db.session.commit()
 
     return redirect(url_for('auth.login'))
 
-
 @auth.route('/logout')
 def logout():
-    return 'Logout'
+    return redirect("http://www.google.com", code=302)
 
 
 import pyodbc
