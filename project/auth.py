@@ -72,36 +72,7 @@ def signup_post():
 
 @auth.route('/logout')
 def logout():
-    return redirect("http://www.google.com", code=302)
-
-
-import pyodbc
-
-# Specifying the ODBC driver, server name, database, etc. directly
-cnxn = pyodbc.connect(r"DRIVER={SQL Server};SERVER=nbiba.database.windows.net;DATABASE=myDB1;UID=azuresql;PWD=aezakmi1996X-")
-
-
-# Create a cursor from the connection
-cursor = cnxn.cursor()
-def user_exists(a,b):
-    x=0
-    cursor.execute("select * from users where email = ? AND password = ?",[a,b])
-    row = cursor.fetchone()
-    if row:
-        x=1
-    return x
-     
-def user_create(a,b,c,d):
-    x=0
-    with cnxn.cursor() as cursor:
-        cursor.execute("INSERT INTO dbo.users([id], [email], [password], [name]) VALUES(?,?,?,?)",[a,b,c,d])
-        x=1
-    return x
-
-
-
-
-        
+    return redirect("http://www.google.com", code=302)        
 
 
 
