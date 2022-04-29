@@ -1,12 +1,12 @@
 import pyodbc
 
 # Specifying the ODBC driver, server name, database, etc. directly
-conn = pyodbc.connect('DRIVER={/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.9.so.1.1};SERVER=nbiba.database.windows.net;DATABASE=myDB1;UID=azuresql;PWD=aezakmi1996X-')
+conn = pyodbc.connect('DRIVER={/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.9.so.1.1};SERVER=X.database.windows.net;DATABASE=myDB1;UID=azuresql;PWD='{password1}')
 import pyodbc
-server = 'nbiba.database.windows.net'
+server = 'X.database.windows.net'
 database = 'DemoDatabase'
-username = 'azuresql'
-password = 'aezakmi1996X-' 
+username = '{username}'
+password = '{password1}' 
 driver= '{SQL Server}'
 
 cursor = conn.cursor()
